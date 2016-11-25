@@ -1,0 +1,20 @@
+//Import bootstrap-sprockets
+@import "bootstrap-sprockets";
+
+// Import cerulean variables
+@import "bootswatch/cerulean/variables";
+
+// Then bootstrap itself
+@import "bootstrap";
+
+// Bootstrap body padding for fixed navbar
+body {
+  padding-top: 60px;
+  padding-bottom: 20px;
+}
+
+// And finally bootswatch style itself
+@import "bootswatch/cerulean/bootswatch";
+
+// own variables
+@import "home";

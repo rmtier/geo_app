@@ -1,0 +1,26 @@
+<% content_for :body do %>
+
+    <h1> GEO MAP </h1>
+
+    <h2> Find nodes for 10 ways </h2>
+
+    <%= simple_form_for :search, url: root_path, method: :get do |f| %>
+        <%= f.input :type , collection: ["ways"], include_blank: false %>
+    <% end %>
+
+    <button id="search_submit">Search in collection</button>
+
+    </br>
+
+    <h2> Find nodes for 10 ways </h2>
+
+    <%= simple_form_for :seach do |f| %>
+        <%= f.input :latitude, label: 'Lat:' %>
+        <%= f.input :longtitude, label: 'Long:'  %>
+    <% end %>
+
+    <button id="search_submit_for_log_lan">Search in collection</button>
+
+    <div id="mapid"></div>
+            
+<% end %>
