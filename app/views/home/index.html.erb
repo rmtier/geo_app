@@ -19,19 +19,38 @@
 
     <button id="search_coord">Search in collection</button>
 
+    <h2> Find sightseeing(historic) </h2>
 
-    <h2> Apppend node </h2>
-    <p>Append node in database </p>
-    <%= simple_form_for :insert_node_form, url: find_points_url, method: :get do |f| %>
+    <p>Find sigtseeing (min_x:16.95, max_x: 17.32, min_y:48, 06, max: 48.2) (LIMITED to 1000 objects) </p>
+    <%= simple_form_for :search_coord_historic, url: find_points_historic_url, method: :get do |f| %>
         <%= f.input :min_x, label: 'Min X:' %>
         <%= f.input :max_x, label: 'Max X:'  %>
         <%= f.input :min_y, label: 'Min Y:' %>
         <%= f.input :max_y, label: 'Max Y:'  %>
-        <%= f.input :type , collection: ["All", "Unknown", "With description"], include_blank: false %>
+        <%= f.input :type , collection: ["all", "unknown", "castle", "battlefield", "memorial", "monument", "archaeological_site", "bondary_stone"], include_blank: false %>
     <% end %>
 
-    <button id="search_coord">Appended</button>
+    <h4>Legend</h4>
+    <p>Grey: unknown type</p>
+    <p>Black: castle </p>
+    <p>Red: battlefield </p>
+    <p>Green: memorial </p>
+    <p>Monument: yellow </p>
+    <p>Archeologic site: orange </p>
+    <p>Blue: bundary stone </p>
 
+    <button id="search_coord_historic">Search in collection</button>
+
+    <h2> Apppend node </h2>
+    <p>Append node in database </p>
+    <%= simple_form_for :insert_node_form, url: insert_node_url, method: :get do |f| %>
+        <%= f.input :name, label: 'Name:' %>
+        <%= f.input :x, label: 'X:'  %>
+        <%= f.input :y, label: 'Y:' %>
+        <%= f.input :type , collection: ["unknown", "castle", "battlefield", "memorial", "monument", "archaeological_site", "bondary_stone"], include_blank: false %>
+    <% end %>
+
+    <button id="insert_node_button">Insert in database</button>
 
     <div id="mapid"></div>
             
