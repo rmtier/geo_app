@@ -23,8 +23,42 @@ ActiveRecord::Schema.define(version: 0) do
     t.bigint "id",                  null: false
   end
 
-# Could not dump table "nodes" because of following StandardError
-#   Unknown type 'geometry(Point,4326)' for column 'geom'
+# Could not dump table "planet_osm_line" because of following StandardError
+#   Unknown type 'geometry(LineString,900913)' for column 'way'
+
+  create_table "planet_osm_nodes", id: :bigint, force: :cascade do |t|
+    t.integer "lat",  null: false
+    t.integer "lon",  null: false
+    t.text    "tags",              array: true
+  end
+
+# Could not dump table "planet_osm_point" because of following StandardError
+#   Unknown type 'geometry(Point,900913)' for column 'way'
+
+# Could not dump table "planet_osm_polygon" because of following StandardError
+#   Unknown type 'geometry(Geometry,900913)' for column 'way'
+
+  create_table "planet_osm_rels", id: :bigint, force: :cascade do |t|
+    t.integer "way_off", limit: 2
+    t.integer "rel_off", limit: 2
+    t.bigint  "parts",                          array: true
+    t.text    "members",                        array: true
+    t.text    "tags",                           array: true
+    t.boolean "pending",           null: false
+    t.index ["id"], name: "planet_osm_rels_idx", where: "pending", using: :btree
+    t.index ["parts"], name: "planet_osm_rels_parts", using: :gin
+  end
+
+# Could not dump table "planet_osm_roads" because of following StandardError
+#   Unknown type 'geometry(LineString,900913)' for column 'way'
+
+  create_table "planet_osm_ways", id: :bigint, force: :cascade do |t|
+    t.bigint  "nodes",   null: false, array: true
+    t.text    "tags",                 array: true
+    t.boolean "pending", null: false
+    t.index ["id"], name: "planet_osm_ways_idx", where: "pending", using: :btree
+    t.index ["nodes"], name: "planet_osm_ways_nodes", using: :gin
+  end
 
   create_table "relation_members", primary_key: ["relation_id", "sequence_id"], force: :cascade do |t|
     t.bigint  "relation_id",           null: false
@@ -52,19 +86,5 @@ ActiveRecord::Schema.define(version: 0) do
     t.string  "srtext",    limit: 2048
     t.string  "proj4text", limit: 2048
   end
-
-  create_table "users", id: :integer, force: :cascade do |t|
-    t.text "name", null: false
-  end
-
-  create_table "way_nodes", primary_key: ["way_id", "sequence_id"], force: :cascade do |t|
-    t.bigint  "way_id",      null: false
-    t.bigint  "node_id",     null: false
-    t.integer "sequence_id", null: false
-    t.index ["node_id"], name: "idx_way_nodes_node_id", using: :btree
-  end
-
-# Could not dump table "ways" because of following StandardError
-#   Unknown type 'geometry(Geometry,4326)' for column 'bbox'
 
 end

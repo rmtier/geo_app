@@ -25,7 +25,7 @@ default: &default
 
 development:
   <<: *default
-  database: geo_database
+  database: geo_dat
 
 
   # The specified database role being used to connect to postgres.
