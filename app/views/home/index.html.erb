@@ -1,57 +1,149 @@
 <% content_for :body do %>
 
-    <h1> GEO MAP </h1>
+    <div id='navigation' class="nav nav-static-top navbar-ight bg-faded">
+      <ul class="nav navbar-nav">
+        <li class="nav-item active"><a>Home</a></li>
+        <li class="nav-item"><a id="find_nodes_page">Find nodes</a></li>
+        <li class="nav-item"><a id="find_historic_page">Find signseeing</a></li>
+        <li class="nav-item"><a id="append_nodes_page">Append nodes</a></li>
+        <li class="nav-item"><a id="road_page">Road between points</a></li>
+      </ul>
+    </div>
 
-    <h2> Find nodes </h2>
+    <div class="jumbotron text-center">
 
-    <p>Data in database from (min_x:16.95, max_x: 17.32, min_y:48, 06, max: 48.2) (LIMITED to 1000 objects) </p>
-    <%= simple_form_for :search_coord, url: find_points_url, method: :get do |f| %>
-        <%= f.input :min_x, label: 'Min X:' %>
-        <%= f.input :max_x, label: 'Max X:'  %>
-        <%= f.input :min_y, label: 'Min Y:' %>
-        <%= f.input :max_y, label: 'Max Y:'  %>
-        <%= f.input :type , collection: ["All", "Unknown", "With description"], include_blank: false %>
-    <% end %>
+        <h1> Signseeing map </h1>
+        <p> Help turist finding signseeing</p>
 
-    <h4>Legend</h4>
-    <p>Green: with description</p>
-    <p>Grey: unknow type</p>
+    </div>
 
-    <button id="search_coord">Search in collection</button>
 
-    <h2> Find sightseeing(historic) </h2>
+    <div class="container">
 
-    <p>Find sigtseeing (min_x:16.95, max_x: 17.32, min_y:48, 06, max: 48.2) (LIMITED to 1000 objects) </p>
-    <%= simple_form_for :search_coord_historic, url: find_points_historic_url, method: :get do |f| %>
-        <%= f.input :min_x, label: 'Min X:' %>
-        <%= f.input :max_x, label: 'Max X:'  %>
-        <%= f.input :min_y, label: 'Min Y:' %>
-        <%= f.input :max_y, label: 'Max Y:'  %>
-        <%= f.input :type , collection: ["all", "unknown", "castle", "battlefield", "memorial", "monument", "archaeological_site", "bondary_stone"], include_blank: false %>
-    <% end %>
+        <div id="find_nodes" name="find_nodes_name">
+          <div class="col-sm-4">
+              <h2> Find nodes </h2>
 
-    <h4>Legend</h4>
-    <p>Grey: unknown type</p>
-    <p>Black: castle </p>
-    <p>Red: battlefield </p>
-    <p>Green: memorial </p>
-    <p>Monument: yellow </p>
-    <p>Archeologic site: orange </p>
-    <p>Blue: bundary stone </p>
+              <p>Data in database from (min_x:16.95, max_x: 17.32, min_y:48, 06, max: 48.2) (LIMITED to 1000 objects) </p>
+              <%= simple_form_for :search_coord, url: find_points_url, method: :get do |f| %>
+                  <%= f.input :min_x, label: 'Min X:' %>
+                  <%= f.input :max_x, label: 'Max X:'  %>
+                  <%= f.input :min_y, label: 'Min Y:' %>
+                  <%= f.input :max_y, label: 'Max Y:'  %>
+                  <%= f.input :type , collection: ["All", "Unknown", "With description"], include_blank: false %>
+              <% end %>
+          </div>
 
-    <button id="search_coord_historic">Search in collection</button>
+          <div class="col-sm-4">
+              <h4>Legend</h4>
+              <p>Green: with description</p>
+              <p>Grey: unknow type</p>
 
-    <h2> Apppend node </h2>
-    <p>Append node in database </p>
-    <%= simple_form_for :insert_node_form, url: insert_node_url, method: :get do |f| %>
-        <%= f.input :name, label: 'Name:' %>
-        <%= f.input :x, label: 'X:'  %>
-        <%= f.input :y, label: 'Y:' %>
-        <%= f.input :type , collection: ["unknown", "castle", "battlefield", "memorial", "monument", "archaeological_site", "bondary_stone"], include_blank: false %>
-    <% end %>
+              <button id="search_coord">Search in collection</button>
+          </div>
+        </div>
 
-    <button id="insert_node_button">Insert in database</button>
+        <div id="find_historic" >
 
-    <div id="mapid"></div>
-            
+          <div class="col-sm-4">
+            <h2> Find sightseeing(historic) </h2>
+
+            <p>Find sigtseeing (min_x:16.95, max_x: 17.32, min_y:48, 06, max: 48.2) (LIMITED to 1000 objects) </p>
+            <%= simple_form_for :search_coord_historic, url: find_points_historic_url, method: :get do |f| %>
+                <%= f.input :min_x, label: 'Min X:' %>
+                <%= f.input :max_x, label: 'Max X:'  %>
+                <%= f.input :min_y, label: 'Min Y:' %>
+                <%= f.input :max_y, label: 'Max Y:'  %>
+                <%= f.input :type , collection: ["all", "unknown", "castle", "battlefield", "memorial", "monument", "archaeological_site", "bondary_stone"], include_blank: false %>
+            <% end %>
+            </div>
+          <div class="col-sm-4">
+            <h4>Legend</h4>
+            <p>Grey: unknown type</p>
+            <p>Black: castle </p>
+            <p>Red: battlefield </p>
+            <p>Green: memorial </p>
+            <p>Monument: yellow </p>
+            <p>Archeologic site: orange </p>
+            <p>Blue: bundary stone </p>
+
+            <button id="search_coord_historic">Search in collection</button>
+            </div>
+          </div>
+        <div id="append_nodes" class="col-sm-4">
+            <h2> Apppend node </h2>
+            <p>Append node in database </p>
+            <%= simple_form_for :insert_node_form, url: insert_node_url, method: :get do |f| %>
+                <%= f.input :name, label: 'Name:' %>
+                <%= f.input :x, label: 'X:'  %>
+                <%= f.input :y, label: 'Y:' %>
+                <%= f.input :type , collection: ["unknown", "castle", "battlefield", "memorial", "monument", "archaeological_site", "bondary_stone"], include_blank: false %>
+            <% end %>
+
+            <button id="insert_node_button">Insert in database</button>
+          </div>
+        <div id="road" class="col-sm-4">
+
+            <h2> Road between two points</h2>
+
+            <p>Road between points </p>
+            <%= simple_form_for :find_paths_form, url: find_paths_url, method: :get do |f| %>
+                <%= f.input :min_x, label: 'Min X:' %>
+                <%= f.input :max_x, label: 'Max X:'  %>
+                <%= f.input :min_y, label: 'Min Y:' %>
+                <%= f.input :max_y, label: 'Max Y:'  %>
+            <% end %>
+
+            <button id="find_path_button">Find path</button>
+          </div>
+      </div>
+    <div id="mapid" class="jumbotron text-center"></div>
+
+    </div>
+
+    <script type="text/javascript">
+        $("#find_nodes").hide();
+        $("#find_historic").hide();
+        $("#append_nodes").hide();
+        $("#road").hide();
+    </script>
+
+    <script>
+        $(document).ready( function() {
+            $("#find_nodes_page").on("click", function() {
+                $("#find_nodes").show();
+                $("#find_historic").hide();
+                $("#append_nodes").hide();
+                $("#road").hide();
+                window.scrollTo(0,document.body.scrollHeight);
+
+            });
+            $("#find_historic_page").on("click", function() {
+                $("#find_nodes").hide();
+                $("#find_historic").show();
+                $("#append_nodes").hide();
+                $("#road").hide();
+                window.scrollTo(0,document.body.scrollHeight);
+
+            });
+            $("#append_nodes_page").on("click", function() {
+                $("#find_nodes").hide();
+                $("#find_historic").hide();
+                $("#append_nodes").show();
+                $("#road").hide();
+                window.scrollTo(0,document.body.scrollHeight);
+
+            });
+            $("#road_page").on("click", function() {
+                $("#find_nodes").hide();
+                $("#find_historic").hide();
+                $("#append_nodes").hide();
+                $("#road").show();
+                window.scrollTo(0,document.body.scrollHeight);
+
+            });
+        });
+    </script>
+
+
 <% end %>

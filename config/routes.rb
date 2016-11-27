@@ -4,5 +4,6 @@ Rails.application.routes.draw do
   get 'find_points', to: 'home#search_points'
   get 'find_points_historic', to: 'home#search_points_historic'
   get 'insert_node', to: 'home#insert_node'
+  get 'find_paths', to: 'home#search_ways'
 
 end

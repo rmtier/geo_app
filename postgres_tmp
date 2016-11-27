@@ -1,0 +1,50 @@
+﻿SELECT p.name, ST_AsGeoJSON(ST_Transform(p.way, 4326)) AS x FROM planet_osm_point  p
+WHERE ST_Contains(ST_MakePolygon(ST_GeomFromText('LINESTRING(75.15 29.53,77 29,77.6 29.5, 75.15 29.53)')), ST_Transform(p.way, 4326))
+LIMIT 100
+
+SELECT p.historic FROM planet_osm_point  p
+WHERE coalesce(p.historic, '') = 'archaeological_site'
+LIMIT 1000
+
+INSERT INTO planet_osm_point (osm_id, name, historic, way) VALUES (CAST( (SELECT Max(p.osm_id) FROM planet_osm_point p) AS BIGINT) + 1, 'TestPamiatky', 'memorial', 
+ ST_Transform(ST_GeomFromText('POINT(-71.060316 48.432044)', 4326), 900913))
+RETURNING osm_id
+
+SELECT CAST( (SELECT Max(p.osm_id) FROM planet_osm_point p) AS BIGINT) + 1
+
+SELECT p.name, p.historic, p. FROM planet_osm_point p 
+
+
+SELECT p.name, ST_AsGeoJSON(ST_Transform(p.way, 4326)) FROM planet_osm_point p WHERE p.osm_id=4516570395 LIMIT 1
+
+DELETE FROM planet_osm_point p WHERE p.name='sv'
+
+SELECT random()
+
+SELECT p.historic FROM planet_osm_point  p
+WHERE coalesce(p.historic, '') != ''
+LIMIT 1000
+
+
+SELECT p.name, ST_AsGeoJSON(ST_Transform(p.way, 4326)) FROM planet_osm_point  p
+WHERE ST_Contains(ST_MakePolygon(ST_GeomFromText('LINESTRING(
+14 40,  
+17 40, 
+17 50, 
+14 50,
+14 40)', 4326)), ST_Transform(p.way, 4326))
+AND coalesce(p.historic, '') != '' 
+LIMIT 100
+
+SELECT p.name, ST_AsGeoJSON(ST_Transform(p.way, 4326)) AS x FROM planet_osm_point  p
+WHERE ST_Contains(ST_MakePolygon(ST_GeomFromText('LINESTRING(0 0,  10000 0,  10000 10000, 0 10000, 0 0)', 4326)), ST_Transform(p.way, 4326))
+LIMIT 100
+
+
+SELECT Count(p.name) AS x FROM planet_osm_point  p
+
+
+
+SELECT ST_MakePolygon(ST_GeomFromText('LINESTRING(14 50,  17 50,  17 40, 14 40, 14 50)'))
+
+SELECT ST_Contains(ST_MakePolygon(ST_GeomFromText('LINESTRING(0 0,  10000 0,  10000 10000, 0 10000, 0 0)')), ST_MakePoint(100, 100))

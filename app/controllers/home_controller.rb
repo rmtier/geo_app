@@ -125,4 +125,32 @@ class HomeController < ApplicationController
       format.html
     end
   end
+
+  def search_ways
+    if params[:find_paths_form]
+
+      sql = "SELECT p.name, ST_AsGeoJSON(ST_Transform(p.way, 4326)) FROM planet_osm_line  p
+           WHERE ST_Contains(ST_MakePolygon(ST_GeomFromText('LINESTRING(#{params[:find_paths_form][:min_x]} #{params[:find_paths_form][:min_y]},
+                                                                        #{params[:find_paths_form][:max_x]} #{params[:find_paths_form][:min_y]},
+                                                                        #{params[:find_paths_form][:max_x]} #{params[:find_paths_form][:max_y]},
+                                                                        #{params[:find_paths_form][:min_x]} #{params[:find_paths_form][:max_y]},
+                                                                        #{params[:find_paths_form][:min_x]} #{params[:find_paths_form][:min_y]})', 4326)), ST_Transform(p.way, 4326))
+           LIMIT 1000"
+      @results = ActiveRecord::Base.connection.execute sql
+
+    else
+      @results = []
+    end
+
+    respond_to do |format|
+      format.json {render json: @results}
+      format.html
+    end
+  end
+
+  def find_nodes_page
+
+  end
+
+
 end

@@ -4,6 +4,8 @@
 
 markers = []
 
+routeControl = ""
+
 green_icon = () ->
   greenIcon = new L.icon ({
     iconUrl: '/assets/marker-icon-2x-green.png',
@@ -110,7 +112,6 @@ $(document).ready ->
       error: (jqXHR, textStatus, errorThrown) ->
         console.log(textStatus)
 
-
   $("#search_submit").click ->
     form = $(".simple_form.search")
 
@@ -144,7 +145,6 @@ $(document).ready ->
 
       error: (jqXHR, textStatus, errorThrown) ->
         console.log(textStatus)
-
 
   $("#insert_node_button").click ->
     form = $(".simple_form.insert_node_form")
@@ -225,3 +225,54 @@ $(document).ready ->
       error: (jqXHR, textStatus, errorThrown) ->
         console.log(textStatus)
 
+  $("#find_path_button").click ->
+    form = $(".simple_form.find_paths_form")
+
+    $.ajax
+      type: "GET",
+      dataType: "json",
+      url: form.attr("action"),
+      data: form.serialize(),
+      success: (results) ->
+        #remove all markers
+        for marker in markers
+          window.map.removeLayer marker
+
+
+
+        console.log(results)
+        objects = []
+
+        for result in results
+          geo_data = JSON.parse(result.st_asgeojson)
+
+          objects.push L.geoJSON(geo_data).bindPopup(result.name).addTo(window.map)
+
+        if objects.length isnt 0
+          group = new L.featureGroup(objects);
+          map.fitBounds(group.getBounds());
+
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+          attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          ).addTo(map);
+
+
+        routeControl = new L.Routing.control( L.extend(window.lrmConfig,
+          waypoints: [
+            L.latLng(17.1066215487492, 48.1392956935479),
+            L.latLng(16.9596638158003, 48.1713936838756)
+          ],
+          geocoder: L.Control.Geocoder.nominatim(),
+          routeWhileDragging: true,
+          reverseWaypoints: true,
+          showAlternatives: true,
+          altLineOptions:
+            styles: [
+              color: 'black', opacity: 0.15, weight: 9,
+              color: 'white', opacity: 0.8, weight: 6,
+              color: 'blue', opacity: 0.5, weight: 2
+            ]
+        )).addTo(window.map)
+
+      error: (jqXHR, textStatus, errorThrown) ->
+        console.log(textStatus)

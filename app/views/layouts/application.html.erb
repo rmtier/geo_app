@@ -7,7 +7,11 @@
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+    <% javascript_include_tag('leaflet-routing-machine.css') %>
+
     <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+    <% stylesheet_link_tag('leaflet-routing-machine.js') %>
+
   </head>
 
   <body>
