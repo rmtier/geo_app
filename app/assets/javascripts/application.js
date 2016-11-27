@@ -14,5 +14,9 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require bootstrap-sprockets
+//= require leaflet
+//= require leaflet-routing-machine
+//= require Control.Geocoder
 //= require_tree .
 //= require turbolinks
+

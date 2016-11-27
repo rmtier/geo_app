@@ -6,11 +6,15 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
-    <% javascript_include_tag('leaflet-routing-machine.css') %>
+    <!--<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
+    <%= stylesheet_link_tag('leaflet-routing-machine.css') %>
 
-    <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
-    <% stylesheet_link_tag('leaflet-routing-machine.js') %>
+    <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+    <%= javascript_include_tag('leaflet-routing-machine.js') %>
+    <%= javascript_include_tag('Control.Geocoder.js') %>
+
+    <!--<script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>-->
 
   </head>
 

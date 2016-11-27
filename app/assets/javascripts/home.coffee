@@ -4,7 +4,7 @@
 
 markers = []
 
-routeControl = ""
+route_controler = ""
 
 green_icon = () ->
   greenIcon = new L.icon ({
@@ -62,6 +62,14 @@ blue_icon = () ->
     popupAnchor: [1, -34],
     shadowSize: [41, 41] })
 
+clean_map = () ->
+  #remove all markers
+  for marker in markers
+    window.map.removeLayer marker
+
+  if route_controler isnt ""
+    window.map.removeControl route_controler
+
 
 init_map = () ->
   window.map = L.map('mapid')
@@ -85,9 +93,7 @@ $(document).ready ->
       url: form.attr("action"),
       data: form.serialize(),
       success: (results) ->
-        #remove all markers
-        for marker in markers
-          window.map.removeLayer marker
+        clean_map()
 
         console.log(results)
         objects = []
@@ -100,7 +106,7 @@ $(document).ready ->
           else
             marker = L.marker(geo_data.coordinates.reverse(), icon: green_icon()).addTo(window.map)
 
-          marker.bindPopup(result.name)
+          marker.bindPopup("<b>" + result.name + "</b>" + "</br>" + geo_data.coordinates.reverse())
 
           markers.push marker
           objects.push marker
@@ -121,9 +127,7 @@ $(document).ready ->
       url: form.attr("action"),
       data: form.serialize(),
       success: (results) ->
-        #remove all markers
-        for marker in markers
-          window.map.removeLayer marker
+        clean_map()
 
         console.log(results)
         objects = []
@@ -136,7 +140,7 @@ $(document).ready ->
           else
             marker = L.marker(geo_data.coordinates.reverse(), icon: green_icon()).addTo(window.map)
 
-          marker.bindPopup(result.name)
+          marker.bindPopup("<b>" + result.name + "</b>" + "</br>" +  geo_data.coordinates.reverse())
           objects.push marker
 
         if objects.length isnt 0
@@ -155,9 +159,7 @@ $(document).ready ->
       url: form.attr("action"),
       data: form.serialize(),
       success: (results) ->
-        #remove all markers
-        for marker in markers
-          window.map.removeLayer marker
+        clean_map()
 
         console.log(results)
         objects = []
@@ -170,7 +172,7 @@ $(document).ready ->
           else
             marker = L.marker(geo_data.coordinates.reverse(), icon: green_icon()).addTo(window.map)
 
-          marker.bindPopup(result.name)
+          marker.bindPopup("<b>" + result.name + "</b>" + "</br>" +  geo_data.coordinates.reverse())
           objects.push marker
 
         if objects.length isnt 0
@@ -189,9 +191,7 @@ $(document).ready ->
       url: form.attr("action"),
       data: form.serialize(),
       success: (results) ->
-        #remove all markers
-        for marker in markers
-          window.map.removeLayer marker
+        clean_map()
 
         console.log(results)
         objects = []
@@ -214,7 +214,7 @@ $(document).ready ->
           else
             marker = L.marker(geo_data.coordinates.reverse(), icon: grey_icon()).addTo(window.map)
 
-          marker.bindPopup(result.name)
+          marker.bindPopup("<b>" + result.name + "</b>" + "</br>" + geo_data.coordinates.reverse())
           markers.push marker
           objects.push marker
 
@@ -226,6 +226,18 @@ $(document).ready ->
         console.log(textStatus)
 
   $("#find_path_button").click ->
+    clean_map()
+
+    routeControl = L.Routing.control(
+      waypoints: [
+        L.latLng(document.getElementById("road_y1").value, document.getElementById("road_x1").value),
+        L.latLng(document.getElementById("road_y2").value, document.getElementById("road_x2").value)
+      ]
+    ).addTo(window.map)
+
+    route_controler = routeControl
+
+  $("#find_paths_button").click ->
     form = $(".simple_form.find_paths_form")
 
     $.ajax
@@ -234,11 +246,7 @@ $(document).ready ->
       url: form.attr("action"),
       data: form.serialize(),
       success: (results) ->
-        #remove all markers
-        for marker in markers
-          window.map.removeLayer marker
-
-
+        clean_map()
 
         console.log(results)
         objects = []
@@ -246,33 +254,14 @@ $(document).ready ->
         for result in results
           geo_data = JSON.parse(result.st_asgeojson)
 
-          objects.push L.geoJSON(geo_data).bindPopup(result.name).addTo(window.map)
+          object = L.geoJSON(geo_data).bindPopup("<b>" + result.name + "</b>").addTo(window.map)
+
+          objects.push object
+          markers.push object
 
         if objects.length isnt 0
           group = new L.featureGroup(objects);
           map.fitBounds(group.getBounds());
-
-        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-          attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          ).addTo(map);
-
-
-        routeControl = new L.Routing.control( L.extend(window.lrmConfig,
-          waypoints: [
-            L.latLng(17.1066215487492, 48.1392956935479),
-            L.latLng(16.9596638158003, 48.1713936838756)
-          ],
-          geocoder: L.Control.Geocoder.nominatim(),
-          routeWhileDragging: true,
-          reverseWaypoints: true,
-          showAlternatives: true,
-          altLineOptions:
-            styles: [
-              color: 'black', opacity: 0.15, weight: 9,
-              color: 'white', opacity: 0.8, weight: 6,
-              color: 'blue', opacity: 0.5, weight: 2
-            ]
-        )).addTo(window.map)
 
       error: (jqXHR, textStatus, errorThrown) ->
         console.log(textStatus)

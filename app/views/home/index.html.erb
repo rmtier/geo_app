@@ -2,18 +2,20 @@
 
     <div id='navigation' class="nav nav-static-top navbar-ight bg-faded">
       <ul class="nav navbar-nav">
-        <li class="nav-item active"><a>Home</a></li>
+        <li class="nav-item active"><a id="home_page">Home</a></li>
         <li class="nav-item"><a id="find_nodes_page">Find nodes</a></li>
         <li class="nav-item"><a id="find_historic_page">Find signseeing</a></li>
         <li class="nav-item"><a id="append_nodes_page">Append nodes</a></li>
         <li class="nav-item"><a id="road_page">Road between points</a></li>
+        <li class="nav-item"><a id="find_roads_page">View Bratislava roads</a></li>
+
       </ul>
     </div>
 
     <div class="jumbotron text-center">
 
-        <h1> Signseeing map </h1>
-        <p> Help turist finding signseeing</p>
+        <h1> Sightseeing map </h1>
+        <p> Help turists find sightseeings</p>
 
     </div>
 
@@ -26,10 +28,10 @@
 
               <p>Data in database from (min_x:16.95, max_x: 17.32, min_y:48, 06, max: 48.2) (LIMITED to 1000 objects) </p>
               <%= simple_form_for :search_coord, url: find_points_url, method: :get do |f| %>
-                  <%= f.input :min_x, label: 'Min X:' %>
-                  <%= f.input :max_x, label: 'Max X:'  %>
-                  <%= f.input :min_y, label: 'Min Y:' %>
-                  <%= f.input :max_y, label: 'Max Y:'  %>
+                  <%= f.input :min_x, label: 'Min X:', :input_html => { :value => "17.1" }%>
+                  <%= f.input :max_x, label: 'Max X:', :input_html => { :value => "17.11" }  %>
+                  <%= f.input :min_y, label: 'Min Y:', :input_html => { :value => "48.12" } %>
+                  <%= f.input :max_y, label: 'Max Y:', :input_html => { :value => "48.13" }  %>
                   <%= f.input :type , collection: ["All", "Unknown", "With description"], include_blank: false %>
               <% end %>
           </div>
@@ -50,10 +52,10 @@
 
             <p>Find sigtseeing (min_x:16.95, max_x: 17.32, min_y:48, 06, max: 48.2) (LIMITED to 1000 objects) </p>
             <%= simple_form_for :search_coord_historic, url: find_points_historic_url, method: :get do |f| %>
-                <%= f.input :min_x, label: 'Min X:' %>
-                <%= f.input :max_x, label: 'Max X:'  %>
-                <%= f.input :min_y, label: 'Min Y:' %>
-                <%= f.input :max_y, label: 'Max Y:'  %>
+                <%= f.input :min_x, label: 'Min X:', :input_html => { :value => "16" }%>
+                <%= f.input :max_x, label: 'Max X:', :input_html => { :value => "18" }  %>
+                <%= f.input :min_y, label: 'Min Y:', :input_html => { :value => "48" } %>
+                <%= f.input :max_y, label: 'Max Y:', :input_html => { :value => "49" }  %>
                 <%= f.input :type , collection: ["all", "unknown", "castle", "battlefield", "memorial", "monument", "archaeological_site", "bondary_stone"], include_blank: false %>
             <% end %>
             </div>
@@ -74,9 +76,9 @@
             <h2> Apppend node </h2>
             <p>Append node in database </p>
             <%= simple_form_for :insert_node_form, url: insert_node_url, method: :get do |f| %>
-                <%= f.input :name, label: 'Name:' %>
-                <%= f.input :x, label: 'X:'  %>
-                <%= f.input :y, label: 'Y:' %>
+                <%= f.input :name, label: 'Name:', :input_html => { :value => "Petrzalsky hrad" }%>
+                <%= f.input :x, label: 'X:', :input_html => { :value => "17.1" } %>
+                <%= f.input :y, label: 'Y:', :input_html => { :value => "17.1" }%>
                 <%= f.input :type , collection: ["unknown", "castle", "battlefield", "memorial", "monument", "archaeological_site", "bondary_stone"], include_blank: false %>
             <% end %>
 
@@ -87,34 +89,59 @@
             <h2> Road between two points</h2>
 
             <p>Road between points </p>
-            <%= simple_form_for :find_paths_form, url: find_paths_url, method: :get do |f| %>
-                <%= f.input :min_x, label: 'Min X:' %>
-                <%= f.input :max_x, label: 'Max X:'  %>
-                <%= f.input :min_y, label: 'Min Y:' %>
-                <%= f.input :max_y, label: 'Max Y:'  %>
-            <% end %>
 
-            <button id="find_path_button">Find path</button>
-          </div>
+          <form action="demo_form.asp">
+            Point 1x: <input type="text" id="road_x1" value="17.1"><br>
+            Point 1y: <input type="text" id="road_y1" value="48.1"><br>
+            Point 2x: <input type="text" id="road_x2" value="17.12"><br>
+            Point 2y: <input type="text" id="road_y2" value="48.12"><br>
+          </form>
+
+          <button id="find_path_button">Find paths</button>
+
+        </div>
+
+        <div id="find_roads" class="col-sm-4">
+          <%= simple_form_for :find_paths_form, url: find_paths_url, method: :get do |f| %>
+              <%= f.input :min_x, label: 'Min X:', :input_html => { :value => "17.1" }%>
+              <%= f.input :max_x, label: 'Max X:', :input_html => { :value => "17.14" }  %>
+              <%= f.input :min_y, label: 'Min Y:', :input_html => { :value => "48.13" }%>
+              <%= f.input :max_y, label: 'Max Y:', :input_html => { :value => "48.15" } %>
+          <% end %>
+
+          <button id="find_paths_button">Find paths</button>
+        </div>
       </div>
     <div id="mapid" class="jumbotron text-center"></div>
 
     </div>
 
-    <script type="text/javascript">
+    <script>
         $("#find_nodes").hide();
         $("#find_historic").hide();
         $("#append_nodes").hide();
         $("#road").hide();
+        $("#find_roads").hide();
     </script>
 
     <script>
         $(document).ready( function() {
+            $("#home_page").on("click", function() {
+                $("#find_nodes").hide();
+                $("#find_historic").hide();
+                $("#append_nodes").hide();
+                $("#road").hide();
+                $("#find_roads").hide();
+
+
+            });
             $("#find_nodes_page").on("click", function() {
                 $("#find_nodes").show();
                 $("#find_historic").hide();
                 $("#append_nodes").hide();
                 $("#road").hide();
+                $("#find_roads").hide();
+
                 window.scrollTo(0,document.body.scrollHeight);
 
             });
@@ -123,6 +150,8 @@
                 $("#find_historic").show();
                 $("#append_nodes").hide();
                 $("#road").hide();
+                $("#find_roads").hide();
+
                 window.scrollTo(0,document.body.scrollHeight);
 
             });
@@ -131,6 +160,8 @@
                 $("#find_historic").hide();
                 $("#append_nodes").show();
                 $("#road").hide();
+                $("#find_roads").hide();
+
                 window.scrollTo(0,document.body.scrollHeight);
 
             });
@@ -139,6 +170,18 @@
                 $("#find_historic").hide();
                 $("#append_nodes").hide();
                 $("#road").show();
+                $("#find_roads").hide();
+
+                window.scrollTo(0,document.body.scrollHeight);
+
+            });
+            $("#find_roads_page").on("click", function() {
+                $("#find_nodes").hide();
+                $("#find_historic").hide();
+                $("#append_nodes").hide();
+                $("#road").hide();
+                $("#find_roads").show();
+
                 window.scrollTo(0,document.body.scrollHeight);
 
             });
